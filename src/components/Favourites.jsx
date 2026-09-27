@@ -1,135 +1,197 @@
+import { useState } from 'react'
 import useReveal from '../hooks/useReveal'
-import { IconSwirlDivider } from './Icons'
+import { IconSwirlDivider, IconWhatsApp, IconBag } from './Icons'
+import { WHATSAPP_URL } from '../constants'
+import mangoShakeImg from '../assets/mango-shake.jpg'
+import freshJuiceImg from '../assets/fresh-juice.jpg'
+import crispSnacksImg from '../assets/crisp-snacks.jpg'
+import frenchFriesImg from '../assets/french-fries.jpg'
+import limeCoolerImg from '../assets/lime-cooler.jpg'
+import creamyShakeImg from '../assets/creamy-shake.jpg'
+
+const CATEGORIES = ['All', 'Juices', 'Shakes', 'Snacks']
 
 const DISHES = [
   {
-    name: 'Chocolate Truffle Cake',
-    desc: 'Dark cocoa sponge, ganache filling, chocolate shavings',
-    tag: 'Bestseller',
-    art: (
-      <svg viewBox="0 0 120 120">
-        <ellipse cx="60" cy="98" rx="38" ry="7" fill="#3A2A20" opacity=".15" />
-        <rect x="26" y="60" width="68" height="34" rx="8" fill="#5C4436" />
-        <path d="M26 62c5-6 11-6 16 0s11 6 16 0 11-6 16 0 11 6 16 0" stroke="#3A2A20" strokeWidth="3" fill="none" strokeLinecap="round" />
-        <circle cx="42" cy="76" r="3.4" fill="#C6912E" />
-        <circle cx="60" cy="70" r="3.4" fill="#C6912E" />
-        <circle cx="78" cy="76" r="3.4" fill="#C6912E" />
-        <rect x="55" y="40" width="10" height="22" rx="4" fill="#5C4436" />
-      </svg>
-    ),
-  },
-  {
-    name: 'Mango Milkshake',
-    desc: 'Thick shake blended with real mango and fresh milk',
-    tag: 'Customer pick',
-    art: (
-      <svg viewBox="0 0 120 120">
-        <ellipse cx="60" cy="104" rx="26" ry="5" fill="#3A2A20" opacity=".15" />
-        <path d="M42 34h36l-8 62a8 8 0 0 1-8 7H58a8 8 0 0 1-8-7l-8-62Z" fill="#C6912E" />
-        <path d="M42 34h36l-3 22H45l-3-22Z" fill="#FBF4E7" />
-        <rect x="56" y="16" width="8" height="20" rx="3" fill="#5C4436" />
-        <circle cx="60" cy="12" r="4" fill="#A6585E" />
-      </svg>
-    ),
+    name: 'Alphonso Mango Milkshake',
+    category: 'Shakes',
+    desc: 'Rich, thick shake blended with real sweet mango pulp, fresh dairy & ice cream',
+    tag: 'Customer Pick',
+    badge: '🥤 Thick Shake',
+    image: mangoShakeImg,
+    fallback: '/images/mango-shake.jpg',
   },
   {
     name: 'Mixed Fruit Juice',
-    desc: 'Seasonal fruit, squeezed fresh with no added syrup',
-    tag: 'Light & fresh',
-    art: (
-      <svg viewBox="0 0 120 120">
-        <ellipse cx="60" cy="104" rx="24" ry="5" fill="#3A2A20" opacity=".15" />
-        <path d="M44 30h32l-6 66a6 6 0 0 1-6 5.5H56a6 6 0 0 1-6-5.5L44 30Z" fill="#A6585E" />
-        <path d="M44 30h32l-2.5 18H46.5L44 30Z" fill="#FBF4E7" />
-        <circle cx="52" cy="20" r="6" fill="#C6912E" />
-        <circle cx="66" cy="16" r="7" fill="#A6585E" />
-        <circle cx="72" cy="26" r="5" fill="#C67B80" />
-      </svg>
-    ),
+    category: 'Juices',
+    desc: 'Seasonal tropical fruits, freshly pressed to order with pure fruit and no added syrup',
+    tag: 'Light & Fresh',
+    badge: '🍹 Cold Pressed',
+    image: freshJuiceImg,
+    fallback: '/images/fresh-juice.jpg',
   },
   {
-    name: 'Veg Puffs & Cutlets',
-    desc: 'Golden-fried snacks, made fresh through the day',
-    tag: 'Grab & go',
-    art: (
-      <svg viewBox="0 0 120 120">
-        <ellipse cx="60" cy="94" rx="34" ry="6" fill="#3A2A20" opacity=".15" />
-        <path d="M32 88c0-2 2-4 6-4h44c4 0 6 2 6 4v2H32v-2Z" fill="#7A4630" />
-        <path d="M38 84c2-20 8-34 22-34s20 14 22 34" fill="#C6912E" />
-        <path d="M38 84c2-20 8-34 22-34s20 14 22 34" stroke="#7A4630" strokeWidth="2" fill="none" />
-      </svg>
-    ),
+    name: 'Golden Veg Puffs & Cutlets',
+    category: 'Snacks',
+    desc: 'Crisp layered puff pastry stuffed with spiced fillings, paired with hot golden cutlets',
+    tag: 'Grab & Go',
+    badge: '🥐 Hot & Flaky',
+    image: crispSnacksImg,
+    fallback: '/images/crisp-snacks.jpg',
   },
   {
-    name: 'French Fries',
-    desc: 'Crisp salted fries, a favourite with the after-school crowd',
-    tag: 'Great snack',
-    art: (
-      <svg viewBox="0 0 120 120">
-        <ellipse cx="60" cy="98" rx="30" ry="6" fill="#3A2A20" opacity=".15" />
-        <path d="M38 92l6-40 44 0 6 40a6 6 0 0 1-6 8H44a6 6 0 0 1-6-8Z" fill="#A6585E" />
-        <rect x="46" y="34" width="6" height="46" rx="2" fill="#C6912E" />
-        <rect x="56" y="30" width="6" height="50" rx="2" fill="#C6912E" />
-        <rect x="66" y="36" width="6" height="44" rx="2" fill="#C6912E" />
-        <rect x="76" y="32" width="6" height="48" rx="2" fill="#C6912E" />
-      </svg>
-    ),
+    name: 'Crispy French Fries',
+    category: 'Snacks',
+    desc: 'Golden-fried salted potato fries, made fresh and crispy for your evening craving',
+    tag: 'Crowd Favourite',
+    badge: '🍟 Fried to Order',
+    image: frenchFriesImg,
+    fallback: '/images/french-fries.jpg',
   },
   {
     name: 'Fresh Lime Cooler',
-    desc: 'Sweet, salt or soda — a cold glass to beat the Kerala heat',
-    tag: 'Seasonal',
-    art: (
-      <svg viewBox="0 0 120 120">
-        <ellipse cx="60" cy="104" rx="26" ry="5" fill="#3A2A20" opacity=".15" />
-        <path d="M40 34h40l-6 64a6 6 0 0 1-6 5.5H52a6 6 0 0 1-6-5.5L40 34Z" fill="#FBF4E7" stroke="#C6912E" strokeWidth="2.2" />
-        <path d="M40 34h40l-2 12H42l-2-12Z" fill="#C6912E" opacity=".4" />
-        <circle cx="52" cy="56" r="6" fill="#C6912E" opacity=".7" />
-        <circle cx="70" cy="66" r="5" fill="#C6912E" opacity=".5" />
-        <rect x="66" y="16" width="4" height="20" rx="2" fill="#C6912E" />
-      </svg>
-    ),
+    category: 'Juices',
+    desc: 'Zesty lime cooler with fresh mint and crushed ice — available sweet, salt or soda',
+    tag: 'Beat The Heat',
+    badge: '🍋 Chilled Cooler',
+    image: limeCoolerImg,
+    fallback: '/images/lime-cooler.jpg',
+  },
+  {
+    name: 'Belgian Chocolate Shake',
+    category: 'Shakes',
+    desc: 'Decadent dark cocoa ganache blended with creamy vanilla ice cream & chocolate flakes',
+    tag: 'Indulgent',
+    badge: '🍫 Real Ganache',
+    image: creamyShakeImg,
+    fallback: '/images/creamy-shake.jpg',
   },
 ]
 
 export default function Favourites() {
+  const [selectedCategory, setSelectedCategory] = useState('All')
   const headRef = useReveal()
-  const scrollerRef = useReveal()
+  const gridRef = useReveal()
+
+  const filteredDishes =
+    selectedCategory === 'All'
+      ? DISHES
+      : DISHES.filter((d) => d.category === selectedCategory)
 
   return (
-    <section id="favourites" className="bg-cocoa text-cream py-24">
-      <div className="max-w-[1180px] mx-auto px-7">
-        <div ref={headRef} className="reveal max-w-[640px] mb-14">
-          <IconSwirlDivider className="w-16 h-7 text-gold mb-4.5" />
-          <h2 className="text-[30px] sm:text-[38px] lg:text-[44px] leading-[1.1] text-cream">
+    <section id="favourites" className="bg-cocoa text-cream py-24 relative overflow-hidden isolate">
+      {/* Decorative ambient background glows */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gold/10 rounded-full blur-[130px] -z-10 pointer-events-none" />
+      <div className="absolute bottom-0 right-10 w-[400px] h-[300px] bg-rose/10 rounded-full blur-[110px] -z-10 pointer-events-none" />
+
+      <div className="max-w-[1180px] mx-auto px-6 sm:px-7">
+        {/* Section Header */}
+        <div ref={headRef} className="reveal max-w-[680px] mx-auto text-center mb-10">
+          <IconSwirlDivider className="w-16 h-7 text-gold mx-auto mb-4" />
+          <h2 className="text-[32px] sm:text-[42px] lg:text-[48px] leading-[1.1] text-cream font-serif">
             Local favourites
           </h2>
-          <p className="mt-4 text-[16.5px] text-cream/70">
-            The six things customers reorder the most — cakes, cool drinks and snacks alike.
+          <p className="mt-3.5 text-[16px] sm:text-[17px] text-cream/75 max-w-[48ch] mx-auto leading-relaxed font-sans">
+            Customer top picks — freshly blended fruit juices, thick creamy shakes, and hot crisp snacks prepared fresh to order.
           </p>
         </div>
 
+        {/* Category Filter Tabs */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-5 py-2 rounded-full text-[13px] sm:text-[13.5px] font-bold transition-all duration-300 ${
+                selectedCategory === cat
+                  ? 'bg-gold text-[#2A1B08] shadow-md shadow-gold/30 -translate-y-0.5'
+                  : 'bg-white/10 text-cream/80 hover:bg-white/15 hover:text-white border border-white/10'
+              }`}
+            >
+              {cat === 'All' ? 'All Favourites' : cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Dishes Grid with Real Photography */}
         <div
-          ref={scrollerRef}
-          className="reveal grid grid-flow-col auto-cols-[78%] sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-3 lg:grid-cols-6 gap-5 overflow-x-auto pb-3.5"
-          style={{ scrollSnapType: 'x proximity' }}
+          ref={gridRef}
+          className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
         >
-          {DISHES.map((d) => (
+          {filteredDishes.map((d) => (
             <div
               key={d.name}
-              className="bg-white/[0.06] border border-white/[0.14] rounded-xl2 p-5.5 transition-all hover:-translate-y-1.5 hover:bg-white/10"
-              style={{ scrollSnapAlign: 'start' }}
+              className="group relative bg-[#2A1D16]/90 border border-white/10 hover:border-gold/60 rounded-3xl overflow-hidden shadow-lg hover:shadow-[0_20px_40px_-15px_rgba(198,145,46,0.3)] transition-all duration-300 hover:-translate-y-2 flex flex-col"
             >
-              <div className="rounded-2xl overflow-hidden bg-cream-deep aspect-square flex items-center justify-center">
-                <div className="w-[78%] h-[78%]">{d.art}</div>
+              {/* Real Food Image */}
+              <div className="relative aspect-[16/11] w-full overflow-hidden bg-black/20">
+                <img
+                  src={d.image}
+                  alt={d.name}
+                  onError={(e) => {
+                    e.currentTarget.src = d.fallback
+                  }}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2A1D16] via-transparent to-black/35" />
+
+                {/* Category Badge */}
+                <span className="absolute top-3 left-3 bg-black/70 backdrop-blur-md text-white border border-white/20 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                  {d.badge}
+                </span>
+
+                {/* Tag Pill */}
+                <span className="absolute top-3 right-3 bg-gold text-[#2A1B08] font-bold text-[10.5px] uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
+                  {d.tag}
+                </span>
               </div>
-              <h3 className="font-serif font-normal text-[19px] mt-4.5 text-cream">{d.name}</h3>
-              <p className="text-[13px] text-cream/65 mt-1.5">{d.desc}</p>
-              <span className="inline-block mt-3 text-[11px] font-bold tracking-wide text-gold bg-gold/[0.16] px-2.5 py-1.5 rounded-full">
-                {d.tag}
-              </span>
+
+              {/* Card Details */}
+              <div className="p-5 sm:p-6 flex flex-col flex-1">
+                <h3 className="font-serif font-normal text-[20px] sm:text-[22px] text-cream group-hover:text-gold transition-colors duration-300">
+                  {d.name}
+                </h3>
+                <p className="text-[13.5px] text-cream/70 leading-relaxed mt-2 flex-1 font-sans">
+                  {d.desc}
+                </p>
+
+                <div className="mt-5 pt-4 border-t border-white/10 flex items-center justify-between">
+                  <span className="text-[12px] font-medium text-cream/60">
+                    Made fresh to order
+                  </span>
+                  <a
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-gold hover:text-gold-deep text-[12.5px] font-bold transition-all group-hover:translate-x-1"
+                  >
+                    <IconWhatsApp className="w-4 h-4 text-emerald-400" />
+                    Order Now →
+                  </a>
+                </div>
+              </div>
             </div>
           ))}
+        </div>
+
+        {/* Bottom Catering / Bulk Orders Banner */}
+        <div className="mt-14 p-6 sm:p-8 rounded-3xl bg-white/[0.04] border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 backdrop-blur-sm">
+          <div className="text-center sm:text-left">
+            <h4 className="font-serif text-[20px] sm:text-[22px] text-cream">
+              Planning a party or office snack break?
+            </h4>
+            <p className="text-[13.5px] text-cream/70 mt-1 font-sans">
+              We prepare bulk hot snacks, fresh juices, and steaming tea &amp; coffee for groups and gatherings in Taliparamba.
+            </p>
+          </div>
+          <a
+            href="#order"
+            className="shrink-0 inline-flex items-center gap-2 bg-gold hover:bg-gold-deep text-[#2A1B08] font-bold text-[14px] px-6 py-3 rounded-full transition-all shadow-md hover:-translate-y-0.5"
+          >
+            <IconBag className="w-4 h-4" />
+            Enquire Now
+          </a>
         </div>
       </div>
     </section>
