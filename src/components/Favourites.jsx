@@ -2,7 +2,7 @@ import { useState } from 'react'
 import useReveal from '../hooks/useReveal'
 import { IconSwirlDivider, IconWhatsApp, IconBag } from './Icons'
 import { WHATSAPP_URL } from '../constants'
-import mangoShakeImg from '../assets/mango-shake.jpg'
+import milkShakeImg from '../assets/milk-shake.jpg'
 import freshJuiceImg from '../assets/fresh-juice.jpg'
 import crispSnacksImg from '../assets/crisp-snacks.jpg'
 import frenchFriesImg from '../assets/french-fries.jpg'
@@ -13,13 +13,13 @@ const CATEGORIES = ['All', 'Juices', 'Shakes', 'Snacks']
 
 const DISHES = [
   {
-    name: 'Alphonso Mango Milkshake',
+    name: 'Milkshakes',
     category: 'Shakes',
-    desc: 'Rich, thick shake blended with real sweet mango pulp, fresh dairy & ice cream',
+    desc: 'Thick, creamy shakes blended fresh with real milk, rich ice cream & choice of flavours',
     tag: 'Customer Pick',
     badge: '🥤 Thick Shake',
-    image: mangoShakeImg,
-    fallback: '/images/mango-shake.jpg',
+    image: milkShakeImg,
+    fallback: '/images/milk-shake.jpg',
   },
   {
     name: 'Mixed Fruit Juice',
