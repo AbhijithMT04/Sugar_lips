@@ -1,5 +1,9 @@
-import useReveal from '../hooks/useReveal'
+npimport useReveal from '../hooks/useReveal'
 import { IconSwirlDivider } from './Icons'
+import freshJuiceImg from '../assets/fresh-juice.jpg'
+import creamyShakeImg from '../assets/creamy-shake.jpg'
+import crispSnacksImg from '../assets/crisp-snacks.jpg'
+import partyOrdersImg from '../assets/party-orders.jpg'
 
 const SERVICES = [
   {
@@ -17,6 +21,11 @@ const SERVICES = [
         <path d="M15 14.5C15 9.8 19 6 24 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
       </>
     ),
+    title: 'Fresh Fruit Juices',
+    tag: 'Cold-Pressed · 100% Real Fruit',
+    desc: 'Squeezed to order from seasonal fruits — orange, mango, pineapple, passion fruit, and fresh lime coolers. No artificial syrups or concentrates, just pure fruit and refreshing chill.',
+    image: freshJuiceImg,
+    fallback: '/images/fresh-juice.jpg',
   },
   {
     num: '02',
@@ -29,6 +38,11 @@ const SERVICES = [
         <path d="M20 4c2 2 2 3 0 5M28 4c2 2 2 3 0 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </>
     ),
+    title: 'Milkshakes & Smoothies',
+    tag: 'Thick & Creamy · Pure Dairy',
+    desc: 'Thick shakes and fruit smoothies blended fresh with whole milk, real dairy, rich ice cream, and wholesome fruits — from classic Belgian chocolate to fresh mango and strawberry.',
+    image: creamyShakeImg,
+    fallback: '/images/creamy-shake.jpg',
   },
   {
     num: '03',
@@ -41,6 +55,11 @@ const SERVICES = [
         <path d="M27 6l4 4M31 6l-4 4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
       </>
     ),
+    title: 'Snacks & Savouries',
+    tag: 'Fried Hot & Fresh',
+    desc: 'Golden flaky veg puffs, crispy cutlets, hot samosas, rolls, and crisp salted french fries — prepared hot through the day, perfect for your evening break or a quick on-the-go snack.',
+    image: crispSnacksImg,
+    fallback: '/images/crisp-snacks.jpg',
   },
   {
     num: '04',
@@ -77,6 +96,10 @@ const SERVICES = [
         <path d="M17 18c0-4 3-7 7-7s7 3 7 7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
       </>
     ),
+    tag: 'Snacks & Tea / Coffee Catering',
+    desc: 'Specialized bulk catering focused on hot snack platters (samosas, puffs, and cutlets) paired with fresh, steaming hot tea or coffee for office meetings, family functions, and get-togethers.',
+    image: partyOrdersImg,
+    fallback: '/images/party-orders.jpg',
   },
 ]
 
@@ -93,6 +116,7 @@ export default function Services() {
           <p className="mt-4 text-[16.5px] text-ink-soft">
             Cakes, fresh bakes, juices, shakes and snacks — here's what leaves our counter every
             week.
+            Fresh fruit juices, thick milkshakes, crispy hot snacks, and hot tea or coffee party orders — here's what leaves our counter every day.
           </p>
         </div>
 
@@ -101,17 +125,48 @@ export default function Services() {
             <div
               key={s.num}
               className="grid grid-cols-[44px_1fr] sm:grid-cols-[56px_1fr_auto] gap-4 sm:gap-6 items-center py-7 px-2 border-b border-black/10 transition-all hover:pl-4 hover:bg-cream-deep"
+              className="group grid grid-cols-[76px_1fr] sm:grid-cols-[96px_1fr_auto] md:grid-cols-[112px_1fr_auto] gap-4 sm:gap-6 items-center py-6 px-2 sm:px-3 border-b border-black/10 transition-all duration-300 hover:bg-cream-deep hover:pl-4 sm:hover:pl-5 rounded-2xl"
             >
               <svg viewBox="0 0 48 48" fill="none" className="w-11 h-11 sm:w-[52px] sm:h-[52px] text-gold-deep">
                 {s.icon}
               </svg>
+              {/* Real Product Picture */}
+              <div className="w-[76px] h-[76px] sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden shadow-sm border-2 border-white/80 shrink-0 bg-cocoa/10">
+                <img
+                  src={s.image}
+                  alt={s.title}
+                  onError={(e) => {
+                    e.currentTarget.src = s.fallback
+                  }}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Text Info */}
               <div>
                 <h3 className="font-serif text-[19px] sm:text-[23px] font-normal text-cocoa">{s.title}</h3>
                 <p className="text-[13.5px] sm:text-[14.5px] text-ink-soft mt-1.5 max-w-[52ch]">{s.desc}</p>
+                <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-rose-deep bg-rose/10 px-2.5 py-0.5 rounded-full mb-1">
+                  {s.tag}
+                </span>
+                <h3 className="font-serif text-[19px] sm:text-[23px] font-normal text-cocoa group-hover:text-gold-deep transition-colors">
+                  {s.title}
+                </h3>
+                <p className="text-[13.5px] sm:text-[14.5px] text-ink-soft mt-1 leading-relaxed max-w-[56ch]">
+                  {s.desc}
+                </p>
               </div>
               <span className="hidden sm:block font-serif italic text-xl text-rose-deep opacity-70">
                 {s.num}
               </span>
+
+              {/* Item Number */}
+              <div className="hidden sm:flex flex-col items-end">
+                <span className="font-serif italic text-2xl text-rose-deep opacity-60 group-hover:opacity-100 transition-opacity">
+                  {s.num}
+                </span>
+              </div>
             </div>
           ))}
         </div>
