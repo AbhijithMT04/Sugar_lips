@@ -57,15 +57,7 @@ const DISHES = [
     image: limeCoolerImg,
     fallback: '/images/lime-cooler.jpg',
   },
-  {
-    name: 'Belgian Chocolate Shake',
-    category: 'Shakes',
-    desc: 'Decadent dark cocoa ganache blended with creamy vanilla ice cream & chocolate flakes',
-    tag: 'Indulgent',
-    badge: '🍫 Real Ganache',
-    image: creamyShakeImg,
-    fallback: '/images/creamy-shake.jpg',
-  },
+ 
 ]
 
 export default function Favourites() {
